@@ -116,4 +116,425 @@ window.codRefund3=async orderId=>{if(!confirm('Create a secure COD refund payout
  window.showSection=async n=>{if(n!=='orders'){return base(n)}document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById('sec-orders')?.classList.add('active');document.querySelectorAll('.navItem').forEach(x=>x.classList.toggle('active',x.dataset.section===n));const pt=document.getElementById('pageTitle');if(pt)pt.textContent='Orders & Payments';await load()};
  document.getElementById('refreshOrders')?.addEventListener('click',load);
 })();
-</script></body></html>
+</script>
+ <script id="MADHU-FINAL-ADMIN-FIX">
+(() => {
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, m =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+  ));
+  const money = v => '₹' + Number(v || 0).toLocaleString('en-IN');
+
+  // ---------- CUSTOMERS ----------
+  window.loadCustomers = async function () {
+    const box = document.getElementById('customerTable');
+    if (!box) return;
+
+    box.innerHTML =
+      '<tr><td colspan="7" class="note">Loading customers…</td></tr>';
+
+    const { data: profiles, error } = await sb
+      .from('profiles')
+      .select('id,name,role,created_at,phone,avatar_url,last_login_at')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      box.innerHTML =
+        `<tr><td colspan="7" class="note">${esc(error.message)}</td></tr>`;
+      return;
+    }
+
+    const { data: orders } = await sb
+      .from('orders')
+      .select('user_id,total,status,created_at,placed_at,payment_status');
+
+    const customerRows = (profiles || []).filter(p => p.role !== 'admin');
+
+    let totalOrders = 0;
+    let delivered = 0;
+    let cancelled = 0;
+    let paid = 0;
+
+    const rows = customerRows.map(c => {
+      const os = (orders || []).filter(o => o.user_id === c.id);
+
+      const spend = os.reduce((sum, o) => {
+        if (o.status !== 'cancelled') return sum + Number(o.total || 0);
+        return sum;
+      }, 0);
+
+      const del = os.filter(o => o.status === 'delivered').length;
+      const can = os.filter(o => o.status === 'cancelled').length;
+
+      totalOrders += os.length;
+      delivered += del;
+      cancelled += can;
+
+      paid += os.reduce((sum, o) =>
+        ['paid','captured'].includes(o.payment_status)
+          ? sum + Number(o.total || 0)
+          : sum, 0);
+
+      const last = os
+        .sort((a,b) =>
+          new Date(b.placed_at || b.created_at) -
+          new Date(a.placed_at || a.created_at)
+        )[0];
+
+      return {
+        ...c,
+        order_count: os.length,
+        delivered_count: del,
+        cancelled_count: can,
+        spend,
+        last_order: last
+      };
+    });
+
+    document.getElementById('cTotal').textContent = customerRows.length;
+    document.getElementById('cOrders').textContent = totalOrders;
+    document.getElementById('cDelivered').textContent = delivered;
+    document.getElementById('cCancelled').textContent = cancelled;
+    document.getElementById('cPaid').textContent = money(paid);
+
+    const q =
+      (document.getElementById('customerSearch')?.value || '')
+      .toLowerCase();
+
+    const filtered = rows.filter(c =>
+      [c.name, c.phone, c.id]
+        .join(' ')
+        .toLowerCase()
+        .includes(q)
+    );
+
+    box.innerHTML = filtered.map(c => `
+      <tr>
+        <td>
+          <b>${esc(c.name || 'Customer')}</b>
+          <div class="note">${esc(c.id)}</div>
+        </td>
+        <td>${esc(c.phone || '—')}</td>
+        <td>${c.order_count}</td>
+        <td>${c.delivered_count}</td>
+        <td>${c.cancelled_count}</td>
+        <td>${money(c.spend)}</td>
+        <td>
+          ${c.last_order
+            ? new Date(
+                c.last_order.placed_at || c.last_order.created_at
+              ).toLocaleDateString('en-IN')
+            : '—'}
+        </td>
+      </tr>
+    `).join('') ||
+      '<tr><td colspan="7" class="note">No customers found.</td></tr>';
+  };
+
+  document.getElementById('customerSearch')
+    ?.addEventListener('input', window.loadCustomers);
+
+
+  // ---------- ORDERS ----------
+  window.loadOrders = async function () {
+    const box = document.getElementById('ordersTable');
+    if (!box) return;
+
+    box.innerHTML =
+      '<tr><td colspan="8" class="note">Loading orders…</td></tr>';
+
+    const { data: orders, error } = await sb
+      .from('orders')
+      .select(`
+        id,
+        order_number,
+        user_id,
+        status,
+        payment_method,
+        payment_status,
+        subtotal,
+        discount,
+        shipping_fee,
+        total,
+        shipping_name,
+        shipping_phone,
+        shipping_line1,
+        shipping_line2,
+        shipping_city,
+        shipping_state,
+        shipping_pincode,
+        placed_at,
+        created_at,
+        tracking_number,
+        carrier,
+        cancellation_reason,
+        cancelled_by
+      `)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      box.innerHTML =
+        `<tr><td colspan="8" class="note">${esc(error.message)}</td></tr>`;
+      return;
+    }
+
+    const { data: profiles } = await sb
+      .from('profiles')
+      .select('id,name,phone');
+
+    const pmap = {};
+    (profiles || []).forEach(p => pmap[p.id] = p);
+
+    const active = (orders || []).filter(o =>
+      !['cancelled','delivered','refunded','returned'].includes(o.status)
+    ).length;
+
+    const delivered = (orders || []).filter(
+      o => o.status === 'delivered'
+    ).length;
+
+    const cancelled = (orders || []).filter(
+      o => o.status === 'cancelled'
+    ).length;
+
+    const value = (orders || [])
+      .filter(o => o.status !== 'cancelled')
+      .reduce((s,o) => s + Number(o.total || 0), 0);
+
+    const paid = (orders || [])
+      .filter(o =>
+        o.payment_method === 'online' &&
+        ['paid','captured'].includes(o.payment_status)
+      )
+      .reduce((s,o) => s + Number(o.total || 0), 0);
+
+    const cod = (orders || [])
+      .filter(o => o.payment_method === 'cod')
+      .reduce((s,o) => s + Number(o.total || 0), 0);
+
+    document.getElementById('oActive').textContent = active;
+    document.getElementById('oDelivered').textContent = delivered;
+    document.getElementById('oCancelled').textContent = cancelled;
+    document.getElementById('oValue').textContent = money(value);
+    document.getElementById('oPaid').textContent = money(paid);
+    document.getElementById('oCod').textContent = money(cod);
+
+    box.innerHTML = (orders || []).map(o => {
+      const c = pmap[o.user_id] || {};
+      const name = c.name || o.shipping_name || 'Customer';
+      const phone = c.phone || o.shipping_phone || '';
+
+      return `
+        <tr>
+          <td>
+            <b>${esc(o.order_number || o.id.slice(0,8))}</b>
+            <div class="note">
+              ${o.created_at
+                ? new Date(o.created_at).toLocaleString('en-IN')
+                : ''}
+            </div>
+          </td>
+
+          <td>
+            <b>${esc(name)}</b>
+            <div class="note">${esc(phone)}</div>
+          </td>
+
+          <td><b>${money(o.total)}</b></td>
+
+          <td>
+            ${esc(o.payment_method || 'cod')}
+            <div class="note">
+              ${esc(o.payment_status || 'pending')}
+            </div>
+          </td>
+
+          <td>
+            <select class="statusSelect"
+              onchange="window.madhuUpdateOrder('${o.id}',this.value)">
+              ${[
+                'pending',
+                'confirmed',
+                'processing',
+                'packed',
+                'shipped',
+                'out_for_delivery',
+                'delivered',
+                'cancelled',
+                'returned',
+                'refunded'
+              ].map(s => `
+                <option value="${s}"
+                  ${s === o.status ? 'selected' : ''}>
+                  ${s.replaceAll('_',' ')}
+                </option>
+              `).join('')}
+            </select>
+
+            ${o.cancellation_reason
+              ? `<div class="note">
+                   Cancellation: ${esc(o.cancellation_reason)}
+                 </div>`
+              : ''}
+          </td>
+
+          <td>
+            <input
+              class="input orderTrack"
+              id="madhu-track-${o.id}"
+              value="${esc(o.tracking_number || '')}"
+              placeholder="Tracking">
+
+            <input
+              class="input orderTrack"
+              id="madhu-carrier-${o.id}"
+              value="${esc(o.carrier || '')}"
+              placeholder="Carrier">
+          </td>
+
+          <td>
+            <button class="btn tinyAction"
+              onclick="window.madhuSaveTracking('${o.id}')">
+              Save
+            </button>
+
+            <a class="btn tinyAction"
+              target="_blank"
+              href="./invoice.html?id=${encodeURIComponent(o.id)}">
+              Invoice
+            </a>
+          </td>
+        </tr>
+      `;
+    }).join('') ||
+      '<tr><td colspan="8" class="note">No orders found.</td></tr>';
+  };
+
+
+  // ---------- ADMIN STATUS UPDATE ----------
+  window.madhuUpdateOrder = async function(id, status) {
+
+    let reason = null;
+
+    if (status === 'cancelled') {
+      reason =
+        prompt('Cancellation reason:') ||
+        'Cancelled by admin';
+    }
+
+    const update = { status };
+
+    if (reason) {
+      update.cancellation_reason = reason;
+      update.cancelled_by = 'admin';
+      update.cancelled_at = new Date().toISOString();
+    }
+
+    const { error } = await sb
+      .from('orders')
+      .update(update)
+      .eq('id', id);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    await sb
+      .from('order_status_history')
+      .insert({
+        order_id: id,
+        status,
+        note: reason || 'Updated by admin'
+      });
+
+    toast('Order updated');
+    window.loadOrders();
+  };
+
+
+  // ---------- TRACKING ----------
+  window.madhuSaveTracking = async function(id) {
+
+    const tracking =
+      document.getElementById('madhu-track-' + id)?.value.trim() || null;
+
+    const carrier =
+      document.getElementById('madhu-carrier-' + id)?.value.trim() || null;
+
+    const { error } = await sb
+      .from('orders')
+      .update({
+        tracking_number: tracking,
+        carrier: carrier
+      })
+      .eq('id', id);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    toast('Tracking updated');
+    window.loadOrders();
+  };
+
+
+  // ---------- SECTION LOADER ----------
+  const oldShowSection = window.showSection;
+
+  window.showSection = function(n) {
+
+    if (n === 'customers') {
+      document.querySelectorAll('.section')
+        .forEach(x => x.classList.remove('active'));
+
+      document.getElementById('sec-customers')
+        ?.classList.add('active');
+
+      document.querySelectorAll('.navItem')
+        .forEach(x =>
+          x.classList.toggle('active', x.dataset.section === n)
+        );
+
+      document.getElementById('pageTitle').textContent = 'Customers';
+
+      window.loadCustomers();
+      return;
+    }
+
+    if (n === 'orders') {
+      document.querySelectorAll('.section')
+        .forEach(x => x.classList.remove('active'));
+
+      document.getElementById('sec-orders')
+        ?.classList.add('active');
+
+      document.querySelectorAll('.navItem')
+        .forEach(x =>
+          x.classList.toggle('active', x.dataset.section === n)
+        );
+
+      document.getElementById('pageTitle').textContent =
+        'Orders & Payments';
+
+      window.loadOrders();
+      return;
+    }
+
+    return oldShowSection(n);
+  };
+
+  // First load after admin login
+  const waitForAdmin = () => {
+    if (document.getElementById('app')?.style.display === 'block') {
+      window.loadCustomers();
+      return;
+    }
+    setTimeout(waitForAdmin, 500);
+  };
+
+  waitForAdmin();
+
+})();
+</script>
+</body></html>
