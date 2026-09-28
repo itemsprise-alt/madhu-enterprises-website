@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invoice | Madhu Enterprises</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>body{margin:0;background:#f3f3f3;color:#151515;font-family:Arial,sans-serif}.sheet{max-width:850px;margin:30px auto;background:#fff;padding:38px;box-shadow:0 8px 35px #0002}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #e7b94e;padding-bottom:20px}.head h1{margin:0;font-family:Georgia}.muted{color:#666}.meta{margin:20px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}.box{border:1px solid #ddd;padding:14px;border-radius:8px}.items{width:100%;border-collapse:collapse}.items th,.items td{padding:10px;border-bottom:1px solid #ddd;text-align:left}.right{text-align:right!important}.total{font-size:20px;font-weight:800}.actions{margin-top:20px;display:flex;gap:10px}.btn{padding:10px 14px;border:0;border-radius:8px;background:#111;color:#fff;font-weight:800;cursor:pointer}@media print{body{background:#fff}.sheet{margin:0;box-shadow:none}.actions{display:none}}@media(max-width:600px){.sheet{margin:0;padding:20px}.meta{grid-template-columns:1fr}}</style><style id="FINAL-PREMIUM-UI">/* FINAL-PREMIUM-UI */
+:root{--accent:#e7b94e;--accent2:#ffd978;--plum:#6f3b82;--pink:#ff4f9a;--green2:#2bb673;--blue:#5b7cff;--orange:#f59e0b}
+/* No black/white action buttons: every interactive CTA gets a visible theme surface. */
+button,.btn,.mini,a.btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important;border:1px solid rgba(255,215,120,.34)!important;box-shadow:0 8px 22px rgba(75,36,90,.20)}
+button:hover,.btn:hover,.mini:hover,a.btn:hover{filter:brightness(1.10);transform:translateY(-1px)}
+.btn.gold,.mini.gold{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important;border-color:#f3ca61!important}
+.btnWishlist,.btnWishlist:visited{background:linear-gradient(135deg,#a72c63,#ff4f9a)!important;color:#fff!important;border-color:#ff78b5!important}
+.btnMeesho{background:linear-gradient(135deg,#e83e88,#ff75b3)!important;color:#fff!important}
+.btnAmazon{background:linear-gradient(135deg,#ff8a00,#ffb347)!important;color:#251300!important}
+.btnWhatsApp,.btn.wa{background:linear-gradient(135deg,#159447,#2ed47a)!important;color:#052713!important;border-color:#55e99a!important}
+.phase3Cart{background:linear-gradient(135deg,#5b3c9d,#8b65e8)!important;color:#fff!important}
+.phase3Buy{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important}
+#accountBtn{background:linear-gradient(135deg,#5b3c9d,#8b65e8)!important}
+#wishlistBtn{background:linear-gradient(135deg,#a72c63,#ff4f9a)!important;color:#fff!important;border-color:#ff78b5!important}
+#cartBtn{background:linear-gradient(135deg,#a86d15,#e7b94e)!important;color:#1a1002!important}
+.accountTabs .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.accountTabs .btn.active,.accountTabs .btn:hover{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important}
+.orderActions .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.orderActions .btn.danger{background:linear-gradient(135deg,#a3264d,#ef557d)!important;color:#fff!important}
+.orderActions .btn.success{background:linear-gradient(135deg,#159447,#2ed47a)!important;color:#052713!important}
+.accountPane .rowItem .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.close{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important;border:1px solid rgba(255,215,120,.3)!important;border-radius:9px!important;width:38px;height:38px}
+#accountDashboardModal .modalBox{background:linear-gradient(145deg,#120d18,#20131f 55%,#0d0a11)!important}
+#accountDashboardModal .accountPane{background:linear-gradient(145deg,#17111f,#100c16)!important;border-color:rgba(255,215,120,.16)!important}
+#accountDashboardModal .dashCard{background:linear-gradient(145deg,#241629,#15101c)!important}
+#accountDashboardModal .rowItem{background:linear-gradient(145deg,#20152a,#120d18)!important}
+#accountDashboardModal .orderCard{background:linear-gradient(145deg,#211528,#120d18)!important}
+#accountDashboardModal .orderStat{background:linear-gradient(145deg,#24182a,#14101a)!important}
+#accountDashboardModal .field,.modalBox .field{background:#17101e!important;color:#fff!important;border-color:rgba(255,215,120,.28)!important}
+#accountDashboardModal .panel{background:linear-gradient(145deg,#17111f,#0f0b15)!important}
+#cartCount,#wishCount{background:linear-gradient(135deg,#f0c55e,#ffd978)!important;color:#241300!important}
+.cardBtns{grid-template-columns:1fr 1fr}
+.cardBtns .mini{min-height:40px}
+#grid .phase3Cart,#grid .phase3Buy{width:100%;margin-top:8px;padding:10px;border-radius:10px;font-weight:900}
+@media(max-width:560px){#grid .cardBtns{grid-template-columns:1fr}.accountQuick .btn{font-size:11px}.accountQuick #wishlistBtn:before{content:'♡';font-size:19px;color:#fff}}
+</style></head><body><main class="sheet"><div class="head"><div><h1>Madhu Enterprises</h1><div class="muted">Sojati Gate, Opp Police Station, Red Building, Jodhpur, Rajasthan – 342001</div><div class="muted">+91 93523 53026 • @madhuenterprise99</div></div><div><b>ORDER INVOICE</b><div id="orderNo" class="muted">—</div></div></div><div class="meta"><div class="box"><b>Bill / Ship To</b><div id="customer" class="muted">Loading…</div></div><div class="box"><b>Order</b><div id="date" class="muted">—</div><div id="pay" class="muted">—</div><div id="status" class="muted">—</div></div></div><table class="items"><thead><tr><th>Product</th><th>SKU</th><th>Qty</th><th class="right">Price</th><th class="right">Amount</th></tr></thead><tbody id="rows"></tbody></table><div style="margin-top:20px;margin-left:auto;max-width:300px"><div style="display:flex;justify-content:space-between"><span>Subtotal</span><b id="sub">₹0</b></div><div style="display:flex;justify-content:space-between"><span>Discount</span><b id="disc">₹0</b></div><div style="display:flex;justify-content:space-between"><span>Shipping</span><b id="ship">₹0</b></div><div style="display:flex;justify-content:space-between;border-top:2px solid #111;margin-top:8px;padding-top:8px" class="total"><span>Total</span><b id="total">₹0</b></div></div><div class="actions"><button class="btn" onclick="window.print()">Print / Save PDF</button><a class="btn" href="./index.html" style="text-decoration:none">Back to Website</a></div></main><script>
+const S='https://ozwnmiiakzdrddkmdccl.supabase.co',K='sb_publishable_DpC318dF-P_mI9JSyFyrlA_XhWJ6x8L',sb=supabase.createClient(S,K);
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN');
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+(async()=>{
+ const id=new URLSearchParams(location.search).get('id');
+ if(!id){document.getElementById('customer').textContent='Order ID missing';return}
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session?.user){document.getElementById('customer').textContent='Please login to view this invoice.';return}
+ const {data:r,error}=await sb.rpc('get_order_invoice',{p_order_id:id});
+ if(error||!r||!r.order){document.getElementById('customer').textContent=error?.message||'Order not found';return}
+ const o=r.order, c=r.customer||{}, items=r.items||[];
+ document.getElementById('orderNo').textContent=o.order_number||'—';
+ document.getElementById('customer').innerHTML=esc(o.shipping_name||c.name)+'<br>'+esc(o.shipping_phone||c.phone||'')+'<br>'+esc(o.shipping_line1||'')+', '+esc(o.shipping_city||'')+', '+esc(o.shipping_state||'')+' - '+esc(o.shipping_pincode||'');
+ document.getElementById('date').textContent=o.placed_at?new Date(o.placed_at).toLocaleString('en-IN'):'—';
+ document.getElementById('pay').textContent=(o.payment_method||'').toUpperCase()+' • '+(o.payment_status||'');
+ document.getElementById('status').textContent='Status: '+String(o.status||'').replaceAll('_',' ');
+ document.getElementById('rows').innerHTML=items.map(x=>`<tr><td>${esc(x.product_name)}</td><td>${esc(x.sku||'—')}</td><td>${x.quantity||0}</td><td class="right">${money(x.price)}</td><td class="right">${money(x.line_total)}</td></tr>`).join('')||'<tr><td colspan="5">No items found</td></tr>';
+ document.getElementById('sub').textContent=money(o.subtotal);document.getElementById('disc').textContent=money(o.discount);document.getElementById('ship').textContent=money(o.shipping_fee);document.getElementById('total').textContent=money(o.total);
+})();
+</script></body></html>

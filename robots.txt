@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /checkout.html
+Disallow: /invoice.html
+Disallow: /order-success.html
+Disallow: /wishlist.html
+Sitemap: https://madhu-enterprises.netlify.app/sitemap.xml

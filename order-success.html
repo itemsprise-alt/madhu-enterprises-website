@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Order Confirmed | Madhu Enterprises</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>:root{--bg:#09070b;--panel:#121017;--gold:#e7b94e;--gold2:#ffd978;--text:#faf6ee;--muted:#aaa3b1;--line:rgba(255,215,120,.18)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#2a1b0c,#09070b 42%,#050408);color:var(--text);font-family:Inter,system-ui,Arial}.box{max-width:650px;margin:12vh auto;padding:34px 22px;background:linear-gradient(145deg,#17121b,#0d0b10);border:1px solid var(--line);border-radius:24px;text-align:center}.ok{font-size:58px}.gold{color:var(--gold2)}.muted{color:var(--muted);line-height:1.7}.btn{display:inline-flex;padding:13px 17px;border-radius:12px;background:linear-gradient(135deg,#c89228,#f2cf70);color:#1b1204;font-weight:900;text-decoration:none;margin:6px}</style><style id="FINAL-PREMIUM-UI">/* FINAL-PREMIUM-UI */
+:root{--accent:#e7b94e;--accent2:#ffd978;--plum:#6f3b82;--pink:#ff4f9a;--green2:#2bb673;--blue:#5b7cff;--orange:#f59e0b}
+/* No black/white action buttons: every interactive CTA gets a visible theme surface. */
+button,.btn,.mini,a.btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important;border:1px solid rgba(255,215,120,.34)!important;box-shadow:0 8px 22px rgba(75,36,90,.20)}
+button:hover,.btn:hover,.mini:hover,a.btn:hover{filter:brightness(1.10);transform:translateY(-1px)}
+.btn.gold,.mini.gold{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important;border-color:#f3ca61!important}
+.btnWishlist,.btnWishlist:visited{background:linear-gradient(135deg,#a72c63,#ff4f9a)!important;color:#fff!important;border-color:#ff78b5!important}
+.btnMeesho{background:linear-gradient(135deg,#e83e88,#ff75b3)!important;color:#fff!important}
+.btnAmazon{background:linear-gradient(135deg,#ff8a00,#ffb347)!important;color:#251300!important}
+.btnWhatsApp,.btn.wa{background:linear-gradient(135deg,#159447,#2ed47a)!important;color:#052713!important;border-color:#55e99a!important}
+.phase3Cart{background:linear-gradient(135deg,#5b3c9d,#8b65e8)!important;color:#fff!important}
+.phase3Buy{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important}
+#accountBtn{background:linear-gradient(135deg,#5b3c9d,#8b65e8)!important}
+#wishlistBtn{background:linear-gradient(135deg,#a72c63,#ff4f9a)!important;color:#fff!important;border-color:#ff78b5!important}
+#cartBtn{background:linear-gradient(135deg,#a86d15,#e7b94e)!important;color:#1a1002!important}
+.accountTabs .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.accountTabs .btn.active,.accountTabs .btn:hover{background:linear-gradient(135deg,#b77a18,#f3ca61)!important;color:#1a1002!important}
+.orderActions .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.orderActions .btn.danger{background:linear-gradient(135deg,#a3264d,#ef557d)!important;color:#fff!important}
+.orderActions .btn.success{background:linear-gradient(135deg,#159447,#2ed47a)!important;color:#052713!important}
+.accountPane .rowItem .btn{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important}
+.close{background:linear-gradient(135deg,#5a356d,#8d4f9f)!important;color:#fff!important;border:1px solid rgba(255,215,120,.3)!important;border-radius:9px!important;width:38px;height:38px}
+#accountDashboardModal .modalBox{background:linear-gradient(145deg,#120d18,#20131f 55%,#0d0a11)!important}
+#accountDashboardModal .accountPane{background:linear-gradient(145deg,#17111f,#100c16)!important;border-color:rgba(255,215,120,.16)!important}
+#accountDashboardModal .dashCard{background:linear-gradient(145deg,#241629,#15101c)!important}
+#accountDashboardModal .rowItem{background:linear-gradient(145deg,#20152a,#120d18)!important}
+#accountDashboardModal .orderCard{background:linear-gradient(145deg,#211528,#120d18)!important}
+#accountDashboardModal .orderStat{background:linear-gradient(145deg,#24182a,#14101a)!important}
+#accountDashboardModal .field,.modalBox .field{background:#17101e!important;color:#fff!important;border-color:rgba(255,215,120,.28)!important}
+#accountDashboardModal .panel{background:linear-gradient(145deg,#17111f,#0f0b15)!important}
+#cartCount,#wishCount{background:linear-gradient(135deg,#f0c55e,#ffd978)!important;color:#241300!important}
+.cardBtns{grid-template-columns:1fr 1fr}
+.cardBtns .mini{min-height:40px}
+#grid .phase3Cart,#grid .phase3Buy{width:100%;margin-top:8px;padding:10px;border-radius:10px;font-weight:900}
+@media(max-width:560px){#grid .cardBtns{grid-template-columns:1fr}.accountQuick .btn{font-size:11px}.accountQuick #wishlistBtn:before{content:'♡';font-size:19px;color:#fff}}
+</style></head><body><main class="box"><div class="ok">✓</div><h1 class="gold">Order Placed Successfully</h1><p id="msg" class="muted">Your order has been created.</p><div><a class="btn" id="invoiceBtn" href="#" style="display:none">View / Print Invoice</a><a class="btn" href="./index.html">Continue Shopping</a><a class="btn" href="./index.html#account">My Account</a></div></main><script>const S='https://ozwnmiiakzdrddkmdccl.supabase.co',K='sb_publishable_DpC318dF-P_mI9JSyFyrlA_XhWJ6x8L',sb=supabase.createClient(S,K);(async()=>{const id=new URLSearchParams(location.search).get('id');const r=await sb.from('orders').select('order_number,status,payment_status,total').eq('id',id).maybeSingle();if(r.data){document.getElementById('msg').textContent='Order '+r.data.order_number+' • '+r.data.status.replaceAll('_',' ')+' • Total ₹'+Number(r.data.total).toLocaleString('en-IN');const b=document.getElementById('invoiceBtn');b.href='./invoice.html?id='+encodeURIComponent(id);b.style.display='inline-flex'}})();</script></body></html>
